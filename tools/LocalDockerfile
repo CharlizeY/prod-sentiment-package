@@ -5,11 +5,11 @@ ARG PYTHON_VERSION=3.9.8
 FROM python:${PYTHON_VERSION}-${IMAGE_VARIANT} AS py3
 FROM openjdk:${OPENJDK_VERSION}-${IMAGE_VARIANT}
 
-ADD https://www.apache.org/dyn/closer.lua/spark/spark-3.1.3/spark-3.1.3-bin-hadoop3.2.tgz /spark-3.1.3-bin-hadoop3.2.tgz
+ADD https://dlcdn.apache.org/spark/spark-3.1.3/spark-3.1.3-bin-hadoop3.2.tgz /spark-3.1.3-bin-hadoop3.2.tgz
 RUN tar zxvf spark-3.1.3-bin-hadoop3.2.tgz
 
 ENV SPARK_HOME=/spark-3.1.3-bin-hadoop3.2.tgz
-ENV PATH=${SPARK_HOME}/bin:${PATH}
+#ENV PATH=${SPARK_HOME}/bin:${PATH}
 
 COPY --from=py3 / /
 
