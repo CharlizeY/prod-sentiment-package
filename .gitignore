@@ -1,2 +1,6 @@
+# Ignore environment setup
 venv/*
 .python-version
+
+# Ignore log files
+*.log

@@ -52,9 +52,9 @@ def get_brand(row_list):
 
             
 class BrandIdentification:
-    def __init__(self, MODEL_NAME):
-        self.MODEL_NAME = MODEL_NAME
-        spark = sparknlp.start()
+    def __init__(self, spark_session, model="ner_dl_bert"):
+        self.spark = spark_session
+        self.model = model
 
         # Define Spark NLP pipeline 
         documentAssembler = DocumentAssembler() \
@@ -66,18 +66,18 @@ class BrandIdentification:
             .setOutputCol('token')
 
         # ner_dl and onto_100 model are trained with glove_100d, so the embeddings in the pipeline should match
-        if (self.MODEL_NAME == "ner_dl") or (self.MODEL_NAME == "onto_100"):
+        if (self.model == "ner_dl") or (self.model == "onto_100"):
             embeddings = WordEmbeddingsModel.pretrained('glove_100d') \
                 .setInputCols(["document", 'token']) \
                 .setOutputCol("embeddings")
 
         # Bert model uses Bert embeddings
-        elif self.MODEL_NAME == "ner_dl_bert":
+        elif self.model == "ner_dl_bert":
             embeddings = BertEmbeddings.pretrained(name='bert_base_cased', lang='en') \
                 .setInputCols(['document', 'token']) \
                 .setOutputCol('embeddings')
 
-        ner_model = NerDLModel.pretrained(MODEL_NAME, 'en') \
+        ner_model = NerDLModel.pretrained(model, 'en') \
             .setInputCols(['document', 'token', 'embeddings']) \
             .setOutputCol('ner')
 
@@ -94,17 +94,16 @@ class BrandIdentification:
         ])
         
         # Create the pipeline model
-        empty_df = spark.createDataFrame([['']]).toDF('text') # An empty df with column name "text"
+        empty_df = self.spark.createDataFrame([['']]).toDF('text') # An empty df with column name "text"
         self.pipeline_model = nlp_pipeline.fit(empty_df)
 
 
-    def predict_brand(self, text): # text could be a pandas dataframe or a Spark dataframe (both with a column "text"), a list of strings or a single string
+    def predict_brand(self, text):
+        # text could be a pandas dataframe or a Spark dataframe (both with a column "text"), a list of strings or a single string
         # Run the pipeline for the text
-        spark = sparknlp.start()
-        
-        if isinstance(text, pd.DataFrame): text_df = spark.createDataFrame(text) # If input a pandas dataframe
-        elif isinstance(text, list): text_df = spark.createDataFrame(pd.DataFrame({'text': text})) # If input a list of strings
-        elif isinstance(text, str): text_df = spark.createDataFrame(pd.DataFrame({'text': text}, index=[0])) # If input a single string
+        if isinstance(text, pd.DataFrame): text_df = self.spark.createDataFrame(text) # If input a pandas dataframe
+        elif isinstance(text, list): text_df = self.spark.createDataFrame(pd.DataFrame({'text': text})) # If input a list of strings
+        elif isinstance(text, str): text_df = self.spark.createDataFrame(pd.DataFrame({'text': text}, index=[0])) # If input a single string
         else: text_df = text
 
         df_spark = self.pipeline_model.transform(text_df) 
@@ -122,58 +121,3 @@ class BrandIdentification:
         df_spark_final.show(100)
 
         return df_spark_final
-
-        
-
-
-if __name__ == '__main__':
-    
-    ##### Test for a list of strings
-    # spark = sparknlp.start()
-
-    MODEL_NAME = "ner_dl_bert" # MODEL_NAME = "onto_100"
-    brand_identifier = BrandIdentification(MODEL_NAME)
-
-    list_of_headlines = ["Bad news for Google", "Tesla went bankrupt today."]
-
-    brands = brand_identifier.predict_brand(list_of_headlines)
-
-
-
-    ##### Test for financial headlines
-    # Load the data from Github
-    NER_url = 'https://raw.githubusercontent.com/Brand-Sentiment-Tracking/python-package/main/data/NER_test_data.csv'
-
-    # Convert csv data to Pandas dataframe 
-    df_NER = pd.read_csv(NER_url, header=None).head(500) # 'header=None' prevents pandas eating the first row as headers
-    df_NER.columns = ['Brand', 'text']
-
-    # Shuffle the DataFrame rows
-    # df_NER = df_NER.sample(frac = 1)
-
-    # Make dataset smaller for faster runtime
-    num_sentences = 10
-    total_num_sentences = df_NER.shape[0]
-    df_NER.drop(df_NER.index[num_sentences:total_num_sentences], inplace=True)
-
-
-    # Alternatively, create a preprocessed Spark dataframe from csv
-    from pyspark import SparkFiles
-    spark.sparkContext.addFile(NER_url)
-
-    # Read raw dataframe
-    df_spark_org = spark.read.csv("file://"+SparkFiles.get("NER_test_data.csv"))
-
-    # Rename columns
-    df_spark_org = df_spark_org.withColumnRenamed("_c0", "Brand").withColumnRenamed("_c1", "text")
-    df_spark_org = df_spark_org.limit(num_sentences)
-    
-
-    # Predict brand using either the Pandas or Spark dataframe
-    start = time.time()
-    brand_identifier.predict_brand(df_NER)
-    # brand_identifier.predict_brand(df_spark_org)
-    end = time.time()
-    
-    print(f"{end-start} seconds elapsed to create ranked tables for {num_sentences} sentences in a Pandas dataframe.")
-    # print(f"{end-start} seconds elapsed to create ranked tables for {num_sentences} sentences in a Spark dataframe.")
