@@ -11,7 +11,7 @@ if __name__ == '__main__':
     spark = sparknlp.start()
     
     logging.warning(f"Running Apache Spark version {spark.version}")
-    logging.warning(f"Running JSL Spark NLP version {sparknlp.version()}")
+    logging.warning(f"Running Spark NLP version {sparknlp.version()}")
 
     article_extractor = ArticleExtraction()
     brand_identifier = BrandIdentification("ner_dl_bert")

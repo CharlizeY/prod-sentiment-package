@@ -1,20 +1,13 @@
-from brand_sentiment.extraction import ArticleExtraction
-
-import os
-import time
 import random
-import sparknlp
 import pandas as pd
-from pyspark import SparkFiles
+
 from pyspark.ml import Pipeline
-from pyspark.sql import SparkSession
+
 from pyspark.sql.types import StringType
-import pyspark.sql.functions as F
-import sparknlp
+from pyspark.sql import functions as F
+
 from sparknlp.annotator import *
 from sparknlp.base import *
-from sparknlp.pretrained import PretrainedPipeline
-from sparknlp_display import NerVisualizer
 
 
 # The spark udf function that has to be defined outside the class
