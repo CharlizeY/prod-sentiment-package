@@ -31,11 +31,8 @@ RUN rm -r /tmp/Python-${PYTHON_VERSION}
 RUN wget -qO- https://dlcdn.apache.org/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION_SHORT}.tgz | tar zx -C /opt && \
     mv /opt/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION_SHORT} /opt/spark
 
-# Configure Spark to respect IAM role given to container
-RUN echo spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.EC2ContainerCredentialsProviderWrapper > /opt/spark/conf/spark-defaults.conf
-
 # Add hadoop-aws and aws-sdk
-RUN wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar -P /opt/spark/jars/ && \ 
+RUN wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar -P /opt/spark/jars/ && \
     wget https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/${AWS_SDK_VERSION}/aws-java-sdk-bundle-${AWS_SDK_VERSION}.jar -P /opt/spark/jars/
 
 ENV SPARK_HOME=/opt/spark
@@ -60,6 +57,10 @@ RUN . ./bin/activate && \
 COPY brand_sentiment/ brand_sentiment/
 COPY articles/ articles/
 COPY main.py .
+
+ENV S3_BUCKET_NAME=extracted-news-articles
+ENV PARQUET_FILEPATH=v1-dev.parquet
+ENV BATCH_UPLOAD_SIZE=100
 
 ENTRYPOINT . ./bin/activate && echo 127.0.0.1 $HOSTNAME >> /etc/hosts && \
            spark-submit --packages com.johnsnowlabs.nlp:spark-nlp_2.12:3.4.2 main.py
