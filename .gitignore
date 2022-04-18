@@ -4,3 +4,5 @@ venv/*
 
 # Ignore log files
 *.log
+aws-java-sdk-bundle-1.11.375.jar
+hadoop-aws-3.2.0.jar
