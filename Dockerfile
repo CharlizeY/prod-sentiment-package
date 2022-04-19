@@ -59,9 +59,11 @@ COPY articles/ articles/
 COPY main.py .
 
 ENV EXTRACTION_BUCKET_NAME=extracted-news-articles
-ENV SENTIMENT_BUCKET_NAME=output-sentiment-bucket
+ENV SENTIMENT_BUCKET_NAME=processed-news-articles
 ENV PARQUET_FILEPATH=v1.parquet
-ENV EXTRACTION_DATE=None
+ENV EXTRACTION_DATE=2022-04-14
 
-ENTRYPOINT . ./bin/activate && echo 127.0.0.1 $HOSTNAME >> /etc/hosts && \
-           spark-submit --packages com.johnsnowlabs.nlp:spark-nlp_2.12:3.4.2 main.py
+ENTRYPOINT . ./bin/activate && spark-submit \
+           --packages com.johnsnowlabs.nlp:spark-nlp_2.12:3.4.2 \
+           --driver-memory=3g \
+           main.py

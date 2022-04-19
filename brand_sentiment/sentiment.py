@@ -45,7 +45,7 @@ class SentimentIdentification:
         # Create a custom pipline if requested
         if self.MODEL_NAME == "custom_pipeline":  # https://nlp.johnsnowlabs.com/2021/11/03/bert_sequence_classifier_finbert_en.html
             document_assembler = DocumentAssembler() \
-                .setInputCol('text') \
+                .setInputCol('title') \
                 .setOutputCol('document')
 
             tokenizer = Tokenizer() \
@@ -65,7 +65,7 @@ class SentimentIdentification:
                 sequenceClassifier
             ])
 
-            self.pipeline_model = pipeline.fit(spark.createDataFrame([['']]).toDF("text"))
+            self.pipeline_model = pipeline.fit(spark.createDataFrame([['']]).toDF("title"))
 
         else:
             self.pipeline_model = PretrainedPipeline(self.MODEL_NAME, lang = 'en')
@@ -75,7 +75,7 @@ class SentimentIdentification:
         """Annotates the input dataframe with the classification results.
 
         Args:
-          df : Pandas or Spark dataframe to classify (must contain a "text" column)
+          df : Pandas or Spark dataframe to classify (must contain a "title" column)
         """
         spark = sparknlp.start()
 
@@ -126,6 +126,7 @@ class SentimentIdentification:
         # Append sentiment to each entry in pred brand list
         append_sent = F.udf(lambda x, y: append_sentiment(x, y), ArrayType(ArrayType(StringType()))) # Output a list of lists
         df_spark_combined = df_spark_combined.withColumn('Predicted_Entity_and_Sentiment', append_sent('Predicted_Entity', 'Predicted_Sentiment'))
+
         # Keep positive/neutral/negative probabilities in the output spark df
         df_spark_combined = df_spark_combined.drop('Predicted_Entity', 'Predicted_Sentiment')
 
