@@ -42,7 +42,7 @@ class SentimentIdentification:
         # Create a custom pipline if requested
         if self.MODEL_NAME == "custom_pipeline":  # https://nlp.johnsnowlabs.com/2021/11/03/bert_sequence_classifier_finbert_en.html
             document_assembler = DocumentAssembler() \
-                .setInputCol('text') \
+                .setInputCol('title') \
                 .setOutputCol('document')
 
             tokenizer = Tokenizer() \
@@ -62,7 +62,7 @@ class SentimentIdentification:
                 sequenceClassifier
             ])
 
-            self.pipeline_model = pipeline.fit(spark.createDataFrame([['']]).toDF("text"))
+            self.pipeline_model = pipeline.fit(spark.createDataFrame([['']]).toDF("title"))
 
         else:
             self.pipeline_model = PretrainedPipeline(self.MODEL_NAME, lang='en')
@@ -71,7 +71,7 @@ class SentimentIdentification:
         """Annotates the input dataframe with the classification results.
 
         Args:
-          df : Pandas or Spark dataframe to classify (must contain a "text" column)
+          df : Pandas or Spark dataframe to classify (must contain a "title" column)
         """
         spark = sparknlp.start()
 
@@ -99,8 +99,8 @@ class SentimentIdentification:
                                               col("metadata")["negative"].alias("negative"))
 
         # Extract only target and label columns
-        # df_spark = df_spark.select("text", "True_Sentiment", "class.result")
-        df_spark = df_spark.select("text", "source_domain", "date_publish", "language", "Predicted_Entity", "class.result")  # This is to run main.py
+        # df_spark = df_spark.select("title", "True_Sentiment", "class.result")
+        df_spark = df_spark.select("title", "source_domain", "date_publish", "language", "Predicted_Entity", "class.result")  # This is to run main.py
 
         # Rename to result column to Predicted Sentiment
         df_spark = df_spark.withColumnRenamed("result", "Predicted_Sentiment")
@@ -126,11 +126,11 @@ class SentimentIdentification:
         # Append sentiment to each entry in pred brand list
         append_sent = F.udf(lambda x, y: append_sentiment(x, y), ArrayType(ArrayType(StringType())))  # Output a list of lists
         df_spark_combined = df_spark_combined.withColumn('Predicted_Entity_and_Sentiment', append_sent('Predicted_Entity', 'Predicted_Sentiment'))
-        # df_spark_combined = df_spark_combined.select("text", "source_domain", "date_publish", "language", "Predicted_Entity_and_Sentiment")
+        # df_spark_combined = df_spark_combined.select("title", "source_domain", "date_publish", "language", "Predicted_Entity_and_Sentiment")
         # If want to keep positive/neutral/negative probabilities in the output spark df
         df_spark_combined = df_spark_combined.drop('Predicted_Entity', 'Predicted_Sentiment')
 
-        # Convert to pandas dataframe for postprocessing (https://towardsdatascience.com/text-classification-in-spark-nlp-with-bert-and-universal-sentence-encoders-e644d618ca32)
+        # Convert to pandas dataframe for postprocessing (https://towardsdatascience.com/title-classification-in-spark-nlp-with-bert-and-universal-sentence-encoders-e644d618ca32)
         # df_pandas_postprocessed = df_spark_combined.toPandas()
 
         # df_spark_combined.show(100)
@@ -145,7 +145,7 @@ class SentimentIdentification:
           string_list: List of strings to classify.
         """
 
-        # Annotate input text using pretrained model
+        # Annotate input title using pretrained model
 
         if self.MODEL_NAME == "custom_pipeline":
             pipeline_annotator = LightPipeline(self.pipeline_model)  # Convert the pipeline to an annotator

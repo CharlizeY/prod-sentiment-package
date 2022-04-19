@@ -20,32 +20,24 @@ def get_brand(row_list):
 
 
 class BrandIdentification:
-    def __init__(self, MODEL_NAME):
-        self.MODEL_NAME = MODEL_NAME
+    def __init__(self):
+        self.MODEL_NAME = 'ner_dl_bert'
         self.spark = sparknlp.start()
 
         # Define Spark NLP pipeline
         documentAssembler = DocumentAssembler() \
-            .setInputCol('text') \
+            .setInputCol('title') \
             .setOutputCol('document')
 
         tokenizer = Tokenizer() \
             .setInputCols(['document']) \
             .setOutputCol('token')
 
-        # ner_dl and onto_100 model are trained with glove_100d, so the embeddings in the pipeline should match
-        if (self.MODEL_NAME == "ner_dl") or (self.MODEL_NAME == "onto_100"):
-            embeddings = WordEmbeddingsModel.pretrained('glove_100d') \
-                .setInputCols(["document", 'token']) \
-                .setOutputCol("embeddings")
+        embeddings = BertEmbeddings.pretrained(name='bert_base_cased', lang='en') \
+            .setInputCols(['document', 'token']) \
+            .setOutputCol('embeddings')
 
-        # Bert model uses Bert embeddings
-        elif self.MODEL_NAME == "ner_dl_bert":
-            embeddings = BertEmbeddings.pretrained(name='bert_base_cased', lang='en') \
-                .setInputCols(['document', 'token']) \
-                .setOutputCol('embeddings')
-
-        ner_model = NerDLModel.pretrained(MODEL_NAME, 'en') \
+        ner_model = NerDLModel.pretrained('ner_dl_bert', 'en') \
             .setInputCols(['document', 'token', 'embeddings']) \
             .setOutputCol('ner')
 
@@ -62,11 +54,11 @@ class BrandIdentification:
         ])
 
         # Create the pipeline model
-        empty_df = self.spark.createDataFrame([['']]).toDF('text')  # An empty df with column name "text"
+        empty_df = self.spark.createDataFrame([['']]).toDF('title')  # An empty df with column name "title"
         self.pipeline_model = nlp_pipeline.fit(empty_df)
 
-    def predict_brand(self, df):  # df is a spark dataframe with a column named "text", which contains the headlines or sentences
-        # Run the pipeline for the spark df containing the "text" column
+    def predict_brand(self, df):  # df is a spark dataframe with a column named "title", which contains the headlines or sentences
+        # Run the pipeline for the spark df containing the "title" column
 
         df_spark = self.pipeline_model.transform(df)
 
@@ -74,7 +66,7 @@ class BrandIdentification:
         pred_brand = F.udf(lambda z: get_brand(z), ArrayType(ArrayType(StringType())))  # Output a list of lists containing [entity, type] pairs
 
         df_spark_combined = df_spark.withColumn("Predicted_Entity", pred_brand('ner_chunk'))
-        df_spark_combined = df_spark_combined.select("text", "source_domain", "date_publish", "language", "Predicted_Entity")
+        df_spark_combined = df_spark_combined.select("title", "source_domain", "date_publish", "language", "Predicted_Entity")
         # df_spark_combined.show(100)
 
         # Remove all rows with no brands detected

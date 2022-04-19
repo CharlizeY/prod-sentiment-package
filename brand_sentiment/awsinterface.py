@@ -1,6 +1,6 @@
 import pyspark.sql.functions as F
 from pyspark.sql import SparkSession
-from datetime import date
+from datetime import date, timedelta
 
 
 class AWSInterface:
@@ -9,14 +9,14 @@ class AWSInterface:
         self.sentiment_bucket_name = sentiment_bucket_name
         self.parquet_filepath = parquet_filepath
         if date_crawled == 'None':
-            self.date_crawled = date.today().isoformat()
+            self.date_crawled = (date.today()-timedelta(days=1)).isoformat()
         else:
             self.date_crawled = date
         self.spark = SparkSession.builder \
             .appName("ArticleParquetToDF") \
             .getOrCreate()
 
-    def s3_parquet(self):
+    def download(self):
         return self.spark.read.parquet(f"s3a://{self.extraction_bucket_name}/{self.parquet_filepath}") \
             .filter(F.column('language') == 'en') \
             .filter(F.column('date_crawled') == self.date_crawled)

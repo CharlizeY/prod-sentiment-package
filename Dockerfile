@@ -59,7 +59,7 @@ COPY articles/ articles/
 COPY main.py .
 
 ENV EXTRACTION_BUCKET_NAME=extracted-news-articles
-ENV SENTIMENT_BUCKET_NAME=output-sentiment-bucket
+ENV SENTIMENT_BUCKET_NAME=processed-news-articles
 ENV PARQUET_FILEPATH=v1.parquet
 ENV EXTRACTION_DATE=None
 

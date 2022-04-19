@@ -20,12 +20,12 @@ logging.warning(f"Running Apache Spark version {spark.version}")
 logging.warning(f"Running Spark NLP version {sparknlp.version()}")
 
 aws_interface = AWSInterface(extraction_bucket_name, sentiment_bucket_name, parquet_filepath, date)
-brand_identifier = BrandIdentification("ner_dl_bert")
+brand_identifier = BrandIdentification()
 sentimentiser = SentimentIdentification("custom_pipeline")
 
 logging.warning(spark.conf.get("spark.driver.memory"))
 
-articles_df = aws_interface.s3_parquet()
+articles_df = aws_interface.download()
 print(articles_df.head())
 brand_spark_df = brand_identifier.predict_brand(articles_df)
 print(brand_spark_df.head())
