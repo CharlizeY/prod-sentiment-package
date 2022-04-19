@@ -65,6 +65,5 @@ ENV EXTRACTION_DATE=None
 
 ENTRYPOINT . ./bin/activate && spark-submit \
            --packages com.johnsnowlabs.nlp:spark-nlp_2.12:3.4.2 \
-           --driver-memory 3g \
-           --conf spark.executor.memory=2g\
+           --driver-memory=3g \
            main.py
