@@ -23,6 +23,8 @@ aws_interface = AWSInterface(extraction_bucket_name, sentiment_bucket_name, parq
 brand_identifier = BrandIdentification("ner_dl_bert")
 sentimentiser = SentimentIdentification("custom_pipeline")
 
+logging.warning(spark.conf.get("spark.executor.memory"))
+
 articles_df = aws_interface.s3_parquet()
 print(articles_df.head())
 brand_spark_df = brand_identifier.predict_brand(articles_df)
