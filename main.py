@@ -21,7 +21,7 @@ logging.warning(f"Running Spark NLP version {sparknlp.version()}")
 
 aws_interface = AWSInterface(extraction_bucket_name, sentiment_bucket_name, parquet_filepath, date)
 brand_identifier = BrandIdentification("ner_dl_bert")
-sentimentiser = SentimentIdentification("classifierdl_bertwiki_finance_sentiment_pipeline")
+sentimentiser = SentimentIdentification("custom_pipeline")
 
 articles_df = aws_interface.s3_parquet()
 print(articles_df.head())
