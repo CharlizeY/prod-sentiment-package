@@ -26,7 +26,28 @@ class TestSentimentIdentification(unittest.TestCase):
         """
         df_combined = self.sentimentiser.predict_dataframe(self.fake_df)
         self.assertTrue(isinstance(df_combined, DataFrame))
-        
+    
+
+    def test_if_score_columns_exist(self):
+        """ Check if the three probability columns and the score column are returned for each headline/sentence.
+        """
+        df_combined = self.sentimentiser.predict_dataframe(self.fake_df)
+        self.assertTrue("positive" in df_combined.columns)
+        self.assertTrue("neutral" in df_combined.columns)
+        self.assertTrue("negative" in df_combined.columns)
+        self.assertTrue("score" in df_combined.columns)
+
+
+    # def test_if_scores_are_numeric(self):
+    #     """ Check if the three probability columns and the score column returned are numeric.
+    #     """
+    #     df_combined = self.sentimentiser.predict_dataframe(self.fake_df)
+    #     df_combined.printSchema()
+    #     print(type(df_combined.select(["positive"]).collect()[0][0]))
+    #     print(type(df_combined.select(["score"]).collect()[0][0]))
+    #     self.assertTrue(isinstance(df_combined.select(["positive"]).collect()[0][0], float))
+    #     self.assertTrue(isinstance(df_combined.select(["score"]).collect()[0][0], float))
+
 
     def test_predict_correct_sentiment(self):
         """ Check if the correct sentiment is returned for a given headline/sentence.
@@ -61,7 +82,6 @@ class TestSentimentIdentification(unittest.TestCase):
             # print(df_combined.select(["Predicted_Entity_and_Sentiment"]).collect()[0][0])
             self.assertTrue(df_combined.select(["Predicted_Entity_and_Sentiment"]).collect()[0][0] == [["Andy Warhol", "PER", "neutral"], ["Sotheby's", "ORG", "neutral"], ["US", "LOC", "neutral"]])
 
-    ###### TO DO: check if the three prob columns exist ####
 
 
 if __name__ == "__main__":
