@@ -12,14 +12,14 @@ logging.basicConfig(level=logging.WARN)
 extraction_bucket_name = environ.get("EXTRACTION_BUCKET_NAME")
 sentiment_bucket_name = environ.get("SENTIMENT_BUCKET_NAME")
 parquet_filepath = environ.get("PARQUET_FILEPATH")
-date = environ.get("EXTRACTION_DATE")
+extraction_date = environ.get("EXTRACTION_DATE")
 
 spark = sparknlp.start()
 
 logging.warning(f"Running Apache Spark version {spark.version}")
 logging.warning(f"Running Spark NLP version {sparknlp.version()}")
 
-aws_interface = AWSInterface(extraction_bucket_name, sentiment_bucket_name, parquet_filepath, date)
+aws_interface = AWSInterface(extraction_bucket_name, sentiment_bucket_name, parquet_filepath, extraction_date)
 brand_identifier = BrandIdentification()
 sentimentiser = SentimentIdentification("custom_pipeline")
 

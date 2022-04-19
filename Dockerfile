@@ -61,7 +61,7 @@ COPY main.py .
 ENV EXTRACTION_BUCKET_NAME=extracted-news-articles
 ENV SENTIMENT_BUCKET_NAME=processed-news-articles
 ENV PARQUET_FILEPATH=v1.parquet
-ENV EXTRACTION_DATE=None
+ENV EXTRACTION_DATE=2022-04-14
 
 ENTRYPOINT . ./bin/activate && spark-submit \
            --packages com.johnsnowlabs.nlp:spark-nlp_2.12:3.4.2 \
