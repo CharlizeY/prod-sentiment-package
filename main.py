@@ -23,9 +23,9 @@ aws_interface = AWSInterface(extraction_bucket_name, sentiment_bucket_name, parq
 brand_identifier = BrandIdentification()
 sentimentiser = SentimentIdentification("custom_pipeline")
 
-logging.warning(spark.conf.get("spark.driver.memory"))
-
 articles_df = aws_interface.download()
+# Rename the "title" column to "text" to run the model pipeline
+articles_df = articles_df.withColumnRenamed("title", "text")
 print(articles_df.head())
 brand_spark_df = brand_identifier.predict_brand(articles_df)
 print(brand_spark_df.head())
