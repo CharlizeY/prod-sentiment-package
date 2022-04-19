@@ -24,6 +24,8 @@ brand_identifier = BrandIdentification("ner_dl_bert")
 sentimentiser = SentimentIdentification("custom_pipeline")
 
 articles_df = aws_interface.s3_parquet()
+# Rename the "title" column to "text" to run the model pipeline
+articles_df = articles_df.withColumnRenamed("title", "text")
 print(articles_df.head())
 brand_spark_df = brand_identifier.predict_brand(articles_df)
 print(brand_spark_df.head())
