@@ -21,10 +21,12 @@ class AWSInterface:
             .getOrCreate()
 
     def download(self):
-        return self.spark.read.parquet(f"s3a://{self.extraction_bucket_name}/{self.parquet_filepath}") \
+        return self.spark.read \
+            .parquet(f"s3a://{self.extraction_bucket_name}/{self.parquet_filepath}") \
             .filter(F.column('date_crawled') == self.extraction_date) \
             .filter(F.column('language') == 'en')
 
     def upload(self, articles_df):
-        articles_df.write.mode('append') \
+        articles_df.write \
+            .mode('append') \
             .parquet(f"s3a://{self.sentiment_bucket_name}/{self.parquet_filepath}")

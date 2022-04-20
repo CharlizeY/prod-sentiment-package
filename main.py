@@ -20,7 +20,7 @@ logging.warning(f"Running Apache Spark version {spark.version}")
 logging.warning(f"Running Spark NLP version {sparknlp.version()}")
 
 aws_interface = AWSInterface(extraction_bucket_name, sentiment_bucket_name, parquet_filepath, extraction_date)
-brand_identifier = BrandIdentification()
+brand_identifier = BrandIdentification("ner_dl_bert")
 sentimentiser = SentimentIdentification("custom_pipeline")
 
 articles_df = aws_interface.download()

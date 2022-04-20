@@ -26,7 +26,7 @@ class BrandIdentification:
 
         # Define Spark NLP pipeline
         documentAssembler = DocumentAssembler() \
-            .setInputCol('title') \
+            .setInputCol('text') \
             .setOutputCol('document')
 
         tokenizer = Tokenizer() \
@@ -67,7 +67,7 @@ class BrandIdentification:
         pred_brand = F.udf(lambda z: get_brand(z), ArrayType(ArrayType(StringType())))  # Output a list of lists containing [entity, type] pairs
 
         df_spark_combined = df_spark.withColumn("Predicted_Entity", pred_brand('ner_chunk'))
-        df_spark_combined = df_spark_combined.select("title", "source_domain", "date_publish", "language", "Predicted_Entity")
+        df_spark_combined = df_spark_combined.select("text", "source_domain", "date_publish", "language", "Predicted_Entity")
         # df_spark_combined.show(100)
 
         # Remove all rows with no brands detected

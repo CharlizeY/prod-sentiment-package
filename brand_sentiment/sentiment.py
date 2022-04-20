@@ -41,7 +41,7 @@ class SentimentIdentification:
         # Create a custom pipline if requested
         if self.MODEL_NAME == "custom_pipeline":  # https://nlp.johnsnowlabs.com/2021/11/03/bert_sequence_classifier_finbert_en.html
             document_assembler = DocumentAssembler() \
-                .setInputCol('title') \
+                .setInputCol('text') \
                 .setOutputCol('document')
 
             tokenizer = Tokenizer() \
@@ -61,7 +61,7 @@ class SentimentIdentification:
                 sequenceClassifier
             ])
 
-            self.pipeline_model = pipeline.fit(spark.createDataFrame([['']]).toDF("title"))
+            self.pipeline_model = pipeline.fit(spark.createDataFrame([['']]).toDF("text"))
 
         else:
             self.pipeline_model = PretrainedPipeline(self.MODEL_NAME, lang='en')
@@ -70,7 +70,7 @@ class SentimentIdentification:
         """Annotates the input dataframe with the classification results.
 
         Args:
-          df : Pandas or Spark dataframe to classify (must contain a "title" column)
+          df : Pandas or Spark dataframe to classify (must contain a "text" column)
         """
         spark = sparknlp.start()
 
