@@ -27,17 +27,15 @@ def append_sentiment(pair_list, sentiment):
 
 class SentimentIdentification:
 
-    def __init__(self, MODEL_NAME):
+    def __init__(self, spark, MODEL_NAME):
         """Creates a class for sentiment identication using specified model.
 
         Args:
           MODEL_NAME: Name of the Spark NLP pretrained pipeline.
         """
-
+        self.spark = spark
         # Create the pipeline instance
         self.MODEL_NAME = MODEL_NAME
-        spark = sparknlp.start()
-
         # Create a custom pipline if requested
         if self.MODEL_NAME == "custom_pipeline":  # https://nlp.johnsnowlabs.com/2021/11/03/bert_sequence_classifier_finbert_en.html
             document_assembler = DocumentAssembler() \
@@ -61,7 +59,7 @@ class SentimentIdentification:
                 sequenceClassifier
             ])
 
-            self.pipeline_model = pipeline.fit(spark.createDataFrame([['']]).toDF("text"))
+            self.pipeline_model = pipeline.fit(self.spark.createDataFrame([['']]).toDF("text"))
 
         else:
             self.pipeline_model = PretrainedPipeline(self.MODEL_NAME, lang='en')
@@ -72,11 +70,9 @@ class SentimentIdentification:
         Args:
           df : Pandas or Spark dataframe to classify (must contain a "text" column)
         """
-        spark = sparknlp.start()
-
         if isinstance(df, pd.DataFrame):
             # Convert to spark dataframe for faster prediction
-            df_spark = spark.createDataFrame(df)
+            df_spark = self.spark.createDataFrame(df)
         else:
             df_spark = df
 

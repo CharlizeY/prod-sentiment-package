@@ -1,13 +1,14 @@
 import pyspark.sql.functions as F
-from pyspark.sql import SparkSession
 from datetime import date, timedelta
 
 
 class AWSInterface:
     def __init__(self,
+                 spark,
                  extraction_bucket_name: str,
                  sentiment_bucket_name: str,
                  extraction_date: str):
+        self.spark = spark
         self.extraction_bucket_name = extraction_bucket_name
         self.sentiment_bucket_name = sentiment_bucket_name
         # self.parquet_filepath = parquet_filepath
@@ -15,18 +16,23 @@ class AWSInterface:
             self.extraction_date = (date.today() - timedelta(days=1)).isoformat()
         else:
             self.extraction_date = extraction_date
-        self.spark = SparkSession.builder \
-            .appName("ArticleParquetToDF") \
-            .getOrCreate()
 
     def download(self):
-        return self.spark.read \
-            .parquet(f"s3a://{self.extraction_bucket_name}") \
+        df = self.spark.read \
+            .parquet(f"s3a://{self.extraction_bucket_name}/") \
             .filter(F.column('date_crawled') == self.extraction_date) \
             .filter(F.column('language') == 'en') \
             .limit(100)
+        df = df.withColumn("date_publish",
+                            F.when(df["date_publish"].isNull(), df["date_crawled"])
+                            .otherwise(df["date_publish"])                          )
+        # Rename the "title" column to "text" to run the model pipeline
+        return df.withColumnRenamed("title", "text")
 
-    def upload(self, articles_df):
-        articles_df.write \
+    def upload(self, df):
+        df.write \
             .mode('append') \
-            .parquet(f"s3a://{self.sentiment_bucket_name}")
+            .parquet(f"s3a://{self.sentiment_bucket_name}/")
+
+    def save_locally(self, df):
+        df.write.csv('/tmp/output')
