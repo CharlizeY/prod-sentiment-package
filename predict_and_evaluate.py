@@ -13,7 +13,7 @@ from IPython.display import display
 
 # # Store data in a Pandas Dataframe
 cols_to_read = ['text',"sentiment (Max's take)"]
-df_pandas = pd.read_csv("./input_data.py", usecols=cols_to_read)
+df_pandas = pd.read_csv("./input_data.csv", usecols=cols_to_read)
 
 # Rename sentiment to True_Sentiment
 df_pandas.rename(columns={"sentiment (Max's take)":"True_Sentiment"},inplace=True)
@@ -29,7 +29,7 @@ df_pandas["True_Sentiment"].replace({1.0: "negative", 2.0: "neutral", 3.0: "posi
 spark = sparknlp.start()
 
 # Create sentiment identifier object
-identifier_pretrained = SentimentIdentification(MODEL_NAME = "custom_pipeline")
+identifier_pretrained = SentimentIdentification(spark = spark, MODEL_NAME = "custom_pipeline")
 
 # Convert to spark for transform
 df_spark = spark.createDataFrame(df_pandas)
