@@ -1,5 +1,5 @@
 # cd to the prod-sentiment-package
-# and run the following : python3 -m evaluation.predict_and_evaluate
+# and run the following : python3 -m evaluation.sentiment.predict_and_evaluate
 
 import sparknlp
 import logging
@@ -16,7 +16,7 @@ from IPython.display import display
 
 # # Store data in a Pandas Dataframe
 cols_to_read = ['text',"sentiment (Max's take)"]
-df_pandas = pd.read_csv("./evaluation/input_data.csv", usecols=cols_to_read)
+df_pandas = pd.read_csv("./evaluation/sentiment/input_data.csv", usecols=cols_to_read)
 
 # Rename sentiment to True_Sentiment
 df_pandas.rename(columns={"sentiment (Max's take)":"True_Sentiment"},inplace=True)
@@ -63,4 +63,4 @@ print(f"Accuracy: {accuracy}")
 print(report)
 
 # Write postprocessed dataframe to csv file
-df_pandas_postprocessed.to_csv('./evaluation/postprocessed_data.csv') 
+df_pandas_postprocessed.to_csv('./evaluation/sentiment/postprocessed_data.csv') 
