@@ -31,8 +31,17 @@ df_pandas["True_Sentiment"].replace({1.0: "negative", 2.0: "neutral", 3.0: "posi
 # Start spark
 spark = sparknlp.start()
 
+# Choose the model
+list_of_models =    ["custom_pipeline",
+                    "classifierdl_bertwiki_finance_sentiment_pipeline",
+                    "analyze_sentimentdl_glove_imdb",
+                    "analyze_sentimentdl_use_imdb",
+                    "analyze_sentimentdl_use_twitter"]
+
+MODEL_NAME  = list_of_models[0]
+
 # Create sentiment identifier object
-identifier_pretrained = SentimentIdentification(spark = spark, MODEL_NAME = "custom_pipeline")
+identifier_pretrained = SentimentIdentification(spark = spark, MODEL_NAME = MODEL_NAME)
 
 # Convert to spark for transform
 df_spark = spark.createDataFrame(df_pandas)
@@ -40,8 +49,11 @@ df_spark = spark.createDataFrame(df_pandas)
 # Annotate dataframe with classification results
 df_spark = identifier_pretrained.pipeline_model.transform(df_spark)
 
-# Only keep necessary columns
-df_spark = df_spark.select("text", "class.result", "True_Sentiment")
+# Extract only necessary columns
+if MODEL_NAME == "custom_pipeline" or MODEL_NAME == "classifierdl_bertwiki_finance_sentiment_pipeline":
+        df_spark = df_spark.select("text", "True_Sentiment", "class.result")
+else:
+        df_spark = df_spark.select("text", "True_Sentiment", "sentiment.result")
                             
 # Rename to result column to Predicted Sentiment
 df_spark = df_spark.withColumnRenamed("result", "Predicted_Sentiment")
@@ -51,6 +63,9 @@ df_spark = df_spark.withColumn("Predicted_Sentiment", array_join("Predicted_Sent
 
 # Convert to pandas to use sklearn functions
 df_pandas_postprocessed = df_spark.toPandas()
+
+# If abbreviations contained in output replace them with full strings
+df_pandas_postprocessed = df_pandas_postprocessed.replace({'Predicted_Sentiment': {'pos' : 'positive', 'neg' : 'negative'}})
 
 display(df_pandas_postprocessed)
 
