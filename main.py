@@ -20,12 +20,10 @@ logging.warning(f"Running Apache Spark version {spark.version}")
 logging.warning(f"Running Spark NLP version {sparknlp.version()}")
 
 aws_interface = (extraction_bucket_name, sentiment_bucket_name, extraction_date)
-brand_identifier = BrandIdentification("ner_dl_bert")
+brand_identifier = BrandIdentification("ner_conll_bert_base_cased")
 sentimentiser = SentimentIdentification("custom_pipeline")
 
-articles_df = aws_interface.download()
-# Rename the "title" column to "text" to run the model pipeline
-articles_df = articles_df.withColumnRenamed("title", "text")
+articles_df = aws_interface.download_and_preprocess()
 print(articles_df.head())
 brand_spark_df = brand_identifier.predict_brand(articles_df)
 print(brand_spark_df.head())
