@@ -58,6 +58,8 @@ ENV EXTRACTION_BUCKET_NAME=fine-tuning-examples/extracted-articles
 ENV SENTIMENT_BUCKET_NAME=fine-tuning-examples/processed-articles
 ENV EXTRACTION_DATE=2022-04-21
 
+
+
 COPY brand_sentiment/ brand_sentiment/
 COPY articles/ articles/
 COPY main.py .
