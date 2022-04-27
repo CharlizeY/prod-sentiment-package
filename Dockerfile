@@ -39,11 +39,6 @@ ENV SPARK_HOME=/opt/spark
 ENV PYSPARK_PYTHON=python3.8
 ENV PATH=${SPARK_HOME}/bin:${PATH}
 
-# Hard code buckets
-ENV EXTRACTION_BUCKET_NAME=extracted-news-articles-multiprocessing-test
-ENV SENTIMENT_BUCKET_NAME=processed-news-articles
-ENV EXTRACTION_DATE=2022-04-18
-
 # Create virtual env for app
 RUN python3.8 -m venv app
 

@@ -8,7 +8,7 @@ from sklearn.metrics import classification_report, accuracy_score
 df_pandas_labelled = pd.read_csv('./evaluation/sentiment/postprocessed_data.csv')
 
 # Rename columns if necessary
-df_pandas_labelled.rename(columns={"True_Sentiment":"True_Sentiment", "Predcited_Sentiment":"Predicted_Sentiment"},inplace=True)
+df_pandas_labelled.rename(columns={"True_Sentiment":"True_Sentiment", "Predicted_Sentiment":"Predicted_Sentiment"},inplace=True)
 
 # Compute the evaluation metrics
 accuracy = accuracy_score(df_pandas_labelled["True_Sentiment"], df_pandas_labelled["Predicted_Sentiment"])
