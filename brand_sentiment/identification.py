@@ -23,6 +23,7 @@ class BrandIdentification:
     def __init__(self, spark, MODEL_NAME):
         self.spark = spark
         self.MODEL_NAME = MODEL_NAME
+        
         # Define Spark NLP pipeline
         documentAssembler = DocumentAssembler() \
             .setInputCol('text') \
