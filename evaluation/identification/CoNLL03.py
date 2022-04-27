@@ -1,3 +1,6 @@
+# cd to the prod-sentiment-package
+# and run the following : python3 -m evaluation.identification.conll03
+
 import time
 import sparknlp
 import pyspark.sql.functions as F
@@ -73,8 +76,8 @@ if __name__ == '__main__':
     start_download = time.time()
 
     # Download the pre-trained model
-    MODEL_NAME = "ner_conll_distilbert_base_cased"
-    brand_identifier = BrandIdentification(MODEL_NAME)
+    MODEL_NAME = "ner_conll_bert_base_cased"
+    brand_identifier = BrandIdentification(spark, MODEL_NAME)
     end_download = time.time()
 
     # Apply the model pipeline on the test set

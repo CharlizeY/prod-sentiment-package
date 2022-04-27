@@ -36,6 +36,7 @@ spark-nlp-display==1.9
 sparknlp==1.0.0
 stack-data==0.2.0
 svgwrite==1.4
+tabulate==0.8.9
 threadpoolctl==3.1.0
 tomli==2.0.1
 tqdm==4.62.3
