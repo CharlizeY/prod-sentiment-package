@@ -38,7 +38,7 @@ list_of_models = ["custom_pipeline",
                   "analyze_sentimentdl_use_imdb",
                   "analyze_sentimentdl_use_twitter"]
 
-MODEL_NAME  = list_of_models[1]
+MODEL_NAME = list_of_models[1]
 
 # Create sentiment identifier object
 identifier_pretrained = SentimentIdentification(spark=spark, MODEL_NAME=MODEL_NAME)
