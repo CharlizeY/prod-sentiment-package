@@ -25,7 +25,7 @@ num_sentences = 500  # Take only the first n labelled sentences
 total_num_sentences = df_pandas.shape[0]
 df_pandas.drop(df_pandas.index[num_sentences:total_num_sentences], inplace=True)
 
-# Replace 1, 2 , 3 with negative, neutral, positive
+# Replace 1, 2, 3 with negative, neutral, positive
 df_pandas["True_Sentiment"].replace({1.0: "negative", 2.0: "neutral", 3.0: "positive"}, inplace=True)
 
 # Start spark
@@ -38,7 +38,7 @@ list_of_models = ["custom_pipeline",
                   "analyze_sentimentdl_use_imdb",
                   "analyze_sentimentdl_use_twitter"]
 
-MODEL_NAME = list_of_models[0]
+MODEL_NAME  = list_of_models[1]
 
 # Create sentiment identifier object
 identifier_pretrained = SentimentIdentification(spark=spark, MODEL_NAME=MODEL_NAME)
