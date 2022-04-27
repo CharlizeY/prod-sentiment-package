@@ -21,8 +21,8 @@ secretKey = environ.get("AWS_SECRET_ACCESS_KEY")
 spark = SparkSession.builder \
     .appName("ArticleParquetToDF") \
     .config("spark.sql.broadcastTimeout", "36000") \
-    .config("fs.s3a.awsAccessKeyId", "{key}") \
-    .config("fs.s3a.awsSecretAccessKey", "{secretKey}") \
+    .config("fs.s3a.awsAccessKeyId", f"{key}") \
+    .config("fs.s3a.awsSecretAccessKey", f"{secretKey}") \
     .getOrCreate()
 
 logging.warning(f"Running Apache Spark version {spark.version}")
