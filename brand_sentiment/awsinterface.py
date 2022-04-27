@@ -27,7 +27,7 @@ class AWSInterface:
         df = df.withColumn("date_publish",
                            F.when(df["date_publish"].isNull(), self.extraction_date)
                            .otherwise(df["date_publish"]))
-        df.withColumn("language", F.lit("en"))
+        df = df.withColumn("language", F.lit("en"))
         # Rename the "title" column to "text" to run the model pipeline
         return df.withColumnRenamed("title", "text")
 

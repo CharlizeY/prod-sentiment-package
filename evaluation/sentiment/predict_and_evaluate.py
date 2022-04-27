@@ -2,10 +2,10 @@
 # and run the following : python3 -m evaluation.sentiment.predict_and_evaluate
 
 import sparknlp
-import logging
-from pyspark.sql import SparkSession
-
-from os import environ
+# import logging
+# from pyspark.sql import SparkSession
+#
+# from os import environ
 
 from brand_sentiment.sentiment import SentimentIdentification
 from pyspark.sql.functions import array_join
