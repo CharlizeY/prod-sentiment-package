@@ -21,8 +21,8 @@ class AWSInterface:
         df = self.spark.read \
             .parquet(f"s3a://{self.extraction_bucket_name}/"
                      f"date_crawled={self.extraction_date}/"
-                     f"language=en/") \
-            .limit(100)
+                     f"language=en/") # \
+            # .limit(100)
         # change format
         df = df.withColumn("date_publish",
                            F.when(df["date_publish"].isNull(), self.extraction_date)
