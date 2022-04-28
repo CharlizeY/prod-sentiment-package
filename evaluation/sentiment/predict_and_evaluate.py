@@ -2,10 +2,10 @@
 # and run the following : python3 -m evaluation.sentiment.predict_and_evaluate
 
 import sparknlp
-import logging
-from pyspark.sql import SparkSession
-
-from os import environ
+# import logging
+# from pyspark.sql import SparkSession
+#
+# from os import environ
 
 from brand_sentiment.sentiment import SentimentIdentification
 from pyspark.sql.functions import array_join
@@ -21,7 +21,7 @@ df_pandas = pd.read_csv("./evaluation/sentiment/input_data.csv", usecols=cols_to
 # Rename sentiment to True_Sentiment
 df_pandas.rename(columns={"sentiment (Max's take)":"True_Sentiment"},inplace=True)
 
-num_sentences = 500 # Take only the first n labelled sentences
+num_sentences = 500  # Take only the first n labelled sentences
 total_num_sentences = df_pandas.shape[0]
 df_pandas.drop(df_pandas.index[num_sentences:total_num_sentences], inplace=True)
 
@@ -32,16 +32,16 @@ df_pandas["True_Sentiment"].replace({1.0: "negative", 2.0: "neutral", 3.0: "posi
 spark = sparknlp.start()
 
 # Choose the model
-list_of_models =    ["custom_pipeline",
-                    "classifierdl_bertwiki_finance_sentiment_pipeline",
-                    "analyze_sentimentdl_glove_imdb",
-                    "analyze_sentimentdl_use_imdb",
-                    "analyze_sentimentdl_use_twitter"]
+list_of_models = ["custom_pipeline",
+                  "classifierdl_bertwiki_finance_sentiment_pipeline",
+                  "analyze_sentimentdl_glove_imdb",
+                  "analyze_sentimentdl_use_imdb",
+                  "analyze_sentimentdl_use_twitter"]
 
-MODEL_NAME  = list_of_models[1]
+MODEL_NAME = list_of_models[1]
 
 # Create sentiment identifier object
-identifier_pretrained = SentimentIdentification(spark = spark, MODEL_NAME = MODEL_NAME)
+identifier_pretrained = SentimentIdentification(spark=spark, MODEL_NAME=MODEL_NAME)
 
 # Convert to spark for transform
 df_spark = spark.createDataFrame(df_pandas)
@@ -51,10 +51,10 @@ df_spark = identifier_pretrained.pipeline_model.transform(df_spark)
 
 # Extract only necessary columns
 if MODEL_NAME == "custom_pipeline" or MODEL_NAME == "classifierdl_bertwiki_finance_sentiment_pipeline":
-        df_spark = df_spark.select("text", "True_Sentiment", "class.result")
+    df_spark = df_spark.select("text", "True_Sentiment", "class.result")
 else:
-        df_spark = df_spark.select("text", "True_Sentiment", "sentiment.result")
-                            
+    df_spark = df_spark.select("text", "True_Sentiment", "sentiment.result")
+
 # Rename to result column to Predicted Sentiment
 df_spark = df_spark.withColumnRenamed("result", "Predicted_Sentiment")
 
@@ -65,7 +65,7 @@ df_spark = df_spark.withColumn("Predicted_Sentiment", array_join("Predicted_Sent
 df_pandas_postprocessed = df_spark.toPandas()
 
 # If abbreviations contained in output replace them with full strings
-df_pandas_postprocessed = df_pandas_postprocessed.replace({'Predicted_Sentiment': {'pos' : 'positive', 'neg' : 'negative'}})
+df_pandas_postprocessed = df_pandas_postprocessed.replace({'Predicted_Sentiment': {'pos': 'positive', 'neg': 'negative'}})
 
 display(df_pandas_postprocessed)
 
@@ -78,4 +78,4 @@ print(f"Accuracy: {accuracy}")
 print(report)
 
 # Write postprocessed dataframe to csv file
-df_pandas_postprocessed.to_csv('./evaluation/sentiment/postprocessed_data.csv') 
+df_pandas_postprocessed.to_csv('./evaluation/sentiment/postprocessed_data.csv')
