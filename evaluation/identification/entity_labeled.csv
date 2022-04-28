@@ -1,4 +1,4 @@
-,article_index,sentiment_max,entity_name,entity_type
+,true_index,sentiment_max,true_entity_name,true_entity_type
 0,0,3,RYU Apparel,ORG
 1,1,2,AMREP Co.,ORG
 2,1,2,Director Edward B. Cloues II,PER
