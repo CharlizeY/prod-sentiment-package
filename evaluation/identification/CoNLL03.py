@@ -5,6 +5,7 @@ import time
 import sparknlp
 import pyspark.sql.functions as F
 from sparknlp.training import CoNLL
+from sklearn.metrics import classification_report
 from tabulate import tabulate
 
 from brand_sentiment.identification import BrandIdentification
@@ -44,16 +45,6 @@ class TokenEvaluation:
 
         return  num_of_correct_entities_by_type
 
-    def compute_accuracy_no_O(self):  
-        ''' Compute the toke-level accuracy for non-'O' tokens. 'O' means the token is 'non-entity'.
-        '''
-        df_no_O = self.df.filter(F.col(self.true_col_name) != 'O') # Filter out the true tokens of 'O'
-        num_of_tokens_no_O = df_no_O.count() 
-        num_of_correct_tokens_no_O = df_no_O.filter(F.col(self.true_col_name) == F.col(self.pred_col_name)).count()
-        acc_no_O = num_of_correct_tokens_no_O/num_of_tokens_no_O
-  
-        return acc_no_O
-
     def compute_classi_metrics(self, num_of_corrected_entities, num_of_predicted_entities, num_of_true_entities):    
         ''' Compute the precison, recall, F1 score for each entity type.
             Return: prec(float): the precision is the percentage of entities found that are correctly matched;
@@ -89,8 +80,13 @@ if __name__ == '__main__':
                                .select(F.expr("cols['0']").alias("token"),
                                        F.expr("cols['1']").alias("ground_truth"),
                                        F.expr("cols['2']").alias("prediction"))
-
-
+    # Drop rows with Null values 
+    pred_token_df = pred_token_df.na.drop()
+    
+    # Drop rows with 'O's (non-entity) in the 'ground_truth', so don't produce metrics for the 'O' class
+    pred_token_df_no_O = pred_token_df.filter((pred_token_df.ground_truth != 'O'))
+    preds_token_pd_df = pred_token_df_no_O.toPandas()
+    
     token_evaluator = TokenEvaluation(pred_token_df, 'ground_truth', 'prediction')
 
     # Count the number of true entities 
@@ -120,9 +116,6 @@ if __name__ == '__main__':
     num_of_correct_entities_PER = token_evaluator.count_correct_entities_by_type('B-PER')
     num_of_correct_entities_MISC = token_evaluator.count_correct_entities_by_type('B-MISC')
 
-    # Compute the toke-level accuracy (non-O)
-    acc_no_O = token_evaluator.compute_accuracy_no_O()
-
     # Compute the precison, recall, F1 score for each entity type
     prec, rec, f1 = token_evaluator.compute_classi_metrics(num_of_correct_entities, num_of_predicted_entities, num_of_true_entities)
     prec_LOC, rec_LOC, f1_LOC = token_evaluator.compute_classi_metrics(num_of_correct_entities_LOC, num_of_predicted_entities_LOC, num_of_true_entities_LOC)
@@ -137,7 +130,7 @@ if __name__ == '__main__':
     ['MISC', prec_MISC, rec_MISC, f1_MISC]] 
     
     # Print the metrics
-    print(f'accuracy (non-O): {"{:.2f}".format(acc_no_O)}')
+    print(classification_report(preds_token_pd_df['ground_truth'], preds_token_pd_df['prediction']))
     print(tabulate(metrics, headers=["entity_type", "precision", "recall", "F1"]))
 
     end_evaluate = time.time()

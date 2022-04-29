@@ -1,7 +1,7 @@
 ,true_index,sentiment_max,true_entity_name,true_entity_type
 0,0,3,RYU Apparel,ORG
 1,1,2,AMREP Co.,ORG
-2,1,2,Director Edward B. Cloues II,PER
+2,1,2,Edward B. Cloues II,PER
 3,2,2,India,LOC
 4,2,2,Modi,PER
 5,2,2,Johnson,PER
@@ -13,52 +13,54 @@
 11,7,2,BEQUANT,ORG
 12,8,2,Daily Ripple-News,ORG
 13,9,2,Herc,ORG
-14,10,3,BrightDrop – GM - Kuka Alliance,ORG
+14,10,3,BrightDrop,ORG
+14,10,3,GM,ORG
+14,10,3,Kuka,ORG
 15,11,3,Tesla,ORG
 16,12,2,Islamabad,LOC
 17,12,2,Pakistan,LOC
-18,12,2,Cabinet,ORG
 19,13,3,Alontae Taylor,PER
 20,13,3,NFL,ORG
 21,14,2,Mariupol,LOC
 22,14,2,Putin,PER
+23,16,2,Rutgers,ORG
 23,16,2,Drew Lascari,PER
 24,16,2,Pequannock,ORG
 25,17,2,Man United,ORG
 26,17,2,Erik ten Hag,PER
 27,18,2,Grant Robertson,PER
-28,19,3,Veeva Vault,ORG
+28,19,3,Veeva Vault CTMS,ORG
 29,19,3,Bristol Myers Squibb,ORG
 30,20,2,PVH Corp.,ORG
 31,21,2,Capital One,ORG
 32,21,2,SageView,ORG
 33,22,1,Mexico,LOC
 34,23,2,"Perficient, Inc",ORG
-35,23,2,Sigma,ORG
+35,23,2,Sigma Planning Corp,ORG
+35,23,2,Perficient, Inc.,ORG
 36,24,2,Beaver Area High School,ORG
 37,25,2,Johnson,PER
 38,26,2,Huntington Bancshares,ORG
 39,27,2,United Airlines,ORG
 40,28,1,A835 Tore roundabout,LOC
-41,29,1,Teddy Bear,ORG
 42,29,1,North Myrtle Beach Humane Society,ORG
 43,30,2,Hong Kong,LOC
 44,30,2,Disneyland,ORG
 45,30,2,Shanghai,LOC
 46,31,2,Daily Ripple-News,ORG
 47,32,3,Alaska Air Group Inc.,ORG
-48,33,2,Israeli,LOC
 49,33,2,West Bank,LOC
 50,34,2,Yuchun Lee,PER
 51,34,2,Vertex Pharmaceuticals Incorporated,ORG
 52,35,3,Green Roads,ORG
 53,35,3,United States,LOC
-54,35,3,Valens Company,ORG
+54,35,3,The Valens Company,ORG
 55,36,3,Disney Springs,LOC
 56,36,3,Salt & Straw,ORG
 57,37,1,Volta Inc.,ORG
 58,37,1,VLTA,ORG
 59,37,1,Levi & Korsinsky,ORG
+60,38,1,UN court,ORG
 60,38,1,Colombia,LOC
 61,38,1,Nicaragua,LOC
 62,38,1,Caribbean,LOC
@@ -68,7 +70,6 @@
 66,41,2,Serena Williams,PER
 67,41,2,Chelsea,ORG
 68,41,2,Abramovich,PER
-69,41,2,U.K.,LOC
 70,42,2,UK,LOC
 71,42,2,RWS,ORG
 72,42,2,Hong Kong,LOC
@@ -78,8 +79,8 @@
 76,45,1,Tigray,LOC
 77,46,1,Florida,LOC
 78,46,1,Disney,ORG
-79,47,1,Government,ORG
 80,47,1,Christoper Luxon,PER
+81,48,3,Loch Ness,LOC
 81,48,3,Highland,LOC
 82,49,2,Tennessee,LOC
 83,50,2,Sigma Planning Corp,ORG
