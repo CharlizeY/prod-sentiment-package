@@ -12,7 +12,7 @@ class AWSInterface:
         self.extraction_bucket_name = extraction_bucket_name
         self.sentiment_bucket_name = sentiment_bucket_name
         # self.parquet_filepath = parquet_filepath
-        if extraction_date == 'None':
+        if extraction_date is None:
             self.extraction_date = (date.today() - timedelta(days=1)).isoformat()
         else:
             self.extraction_date = extraction_date
@@ -21,8 +21,8 @@ class AWSInterface:
         df = self.spark.read \
             .parquet(f"s3a://{self.extraction_bucket_name}/"
                      f"date_crawled={self.extraction_date}/"
-                     f"language=en/") # \
-            # .limit(100)
+                     f"language=en/") \
+            .limit(100)
         # change format
         df = df.withColumn("date_publish",
                            F.when(df["date_publish"].isNull(), self.extraction_date)

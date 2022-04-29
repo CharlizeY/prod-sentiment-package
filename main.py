@@ -29,8 +29,13 @@ logging.warning(f"Running Apache Spark version {spark.version}")
 logging.warning(f"Running Spark NLP version {sparknlp.version()}")
 
 aws_interface = AWSInterface(spark, extraction_bucket_name, sentiment_bucket_name, extraction_date)
+<<<<<<< Updated upstream
 brand_identifier = BrandIdentification(spark, "xlnet_base")
 sentimentiser = SentimentIdentification(spark, "classifierdl_bertwiki_finance_sentiment_pipeline")
+=======
+# brand_identifier = BrandIdentification(spark, "ner_conll_bert_base_cased")
+# sentimentiser = SentimentIdentification(spark, "classifierdl_bertwiki_finance_sentiment_pipeline")
+>>>>>>> Stashed changes
 
 articles_df = aws_interface.download()
 articles_df.show()

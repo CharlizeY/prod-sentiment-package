@@ -1,4 +1,4 @@
-import sparknlp
+# import sparknlp
 from pyspark.ml import Pipeline
 from pyspark.sql.types import StringType, ArrayType
 import pyspark.sql.functions as F
