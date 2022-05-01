@@ -1,100 +1,100 @@
-,true_index,sentiment_max,true_entity_name,true_entity_type
-0,0,3,RYU Apparel,ORG
-1,1,2,AMREP Co.,ORG
-2,1,2,Edward B. Cloues II,PER
-3,2,2,India,LOC
-4,2,2,Modi,PER
-5,2,2,Johnson,PER
-6,3,2,Bearden High School,ORG
-7,4,2,Ukraine,LOC
-8,5,2,New Jersey,LOC
-9,6,2,China,LOC
-10,6,2,Xi,PER
-11,7,2,BEQUANT,ORG
-12,8,2,Daily Ripple-News,ORG
-13,9,2,Herc,ORG
-14,10,3,BrightDrop,ORG
-15,10,3,GM,ORG
-16,10,3,Kuka,ORG
-17,11,3,Tesla,ORG
-18,12,2,Islamabad,LOC
-19,12,2,Pakistan,LOC
-20,13,3,Alontae Taylor,PER
-21,13,3,NFL,ORG
-22,14,2,Mariupol,LOC
-23,14,2,Putin,PER
-24,16,2,Rutgers,ORG
-25,16,2,Drew Lascari,PER
-26,16,2,Pequannock,ORG
-27,17,2,Man United,ORG
-28,17,2,Erik ten Hag,PER
-29,18,2,Grant Robertson,PER
-30,19,3,Veeva Vault CTMS,ORG
-31,19,3,Bristol Myers Squibb,ORG
-32,20,2,PVH Corp.,ORG
-33,21,2,Capital One,ORG
-34,21,2,SageView,ORG
-35,22,1,Mexico,LOC
-36,23,2,"Perficient, Inc",ORG
-37,23,2,Sigma Planning Corp,ORG
-38,24,2,Beaver Area High School,ORG
-39,25,2,Johnson,PER
-40,26,2,Huntington Bancshares,ORG
-41,27,2,United Airlines,ORG
-42,28,1,A835 Tore roundabout,LOC
-43,29,1,North Myrtle Beach Humane Society,ORG
-44,30,2,Hong Kong,LOC
-45,30,2,Disneyland,ORG
-46,30,2,Shanghai,LOC
-47,31,2,Daily Ripple-News,ORG
-48,32,3,Alaska Air Group Inc.,ORG
-49,33,2,West Bank,LOC
-50,34,2,Yuchun Lee,PER
-51,34,2,Vertex Pharmaceuticals Incorporated,ORG
-52,35,3,Green Roads,ORG
-53,35,3,United States,LOC
-54,35,3,The Valens Company,ORG
-55,36,3,Disney Springs,LOC
-56,36,3,Salt & Straw,ORG
-57,37,1,Volta Inc.,ORG
-58,37,1,VLTA,ORG
-59,37,1,Levi & Korsinsky,ORG
-60,38,1,UN court,ORG
-61,38,1,Colombia,LOC
-62,38,1,Nicaragua,LOC
-63,38,1,Caribbean,LOC
-64,39,2,Beaver Falls High School,ORG
-65,40,2,Sphere 3D,ORG
-66,41,2,Lewis Hamilton,PER
-67,41,2,Serena Williams,PER
-68,41,2,Chelsea,ORG
-69,41,2,Abramovich,PER
-70,42,2,UK,LOC
-71,42,2,RWS,ORG
-72,42,2,Hong Kong,LOC
-73,43,2,Brightpearl,ORG
-74,44,2,Insteel Industries,ORG
-75,45,1,Ethiopia,LOC
-76,45,1,Tigray,LOC
-77,46,1,Florida,LOC
-78,46,1,Disney,ORG
-80,47,1,Christoper Luxon,PER
-81,48,3,Loch Ness,LOC
-81,48,3,Highland,LOC
-82,49,2,Tennessee,LOC
-83,50,2,Sigma Planning Corp,ORG
-84,50,2,Invesco,ORG
-85,51,2,Office Properties Income Trust,ORG
-86,51,2,Zacks Investment Research,ORG
-87,52,2,The Daily Ripple-News,ORG
-88,53,2,Russia,LOC
-89,54,2,Man United,ORG
-90,54,2,Erik ten Hag,PER
-91,55,2,WELL Health,ORG
-92,55,2,Bloom Burton & Co.,ORG
-93,56,2,Veeva Vault CTMS,ORG
-94,56,2,Bristol Myers Squibb,ORG
-95,57,2,Beaver Local High School
+,true_index,true_entity_name,true_entity_type
+0,0,RYU Apparel,ORG
+1,1,AMREP Co.,ORG
+2,1,Edward B. Cloues II,PER
+3,2,India,LOC
+4,2,Modi,PER
+5,2,Johnson,PER
+6,3,Bearden High School,ORG
+7,4,Ukraine,LOC
+8,5,New Jersey,LOC
+9,6,China,LOC
+10,6,Xi,PER
+11,7,BEQUANT,ORG
+12,8,Daily Ripple-News,ORG
+13,9,Herc,ORG
+14,10,BrightDrop,ORG
+15,10,GM,ORG
+16,10,Kuka,ORG
+17,11,Tesla,ORG
+18,12,Islamabad,LOC
+19,12,Pakistan,LOC
+20,13,Alontae Taylor,PER
+21,13,NFL,ORG
+22,14,Mariupol,LOC
+23,14,Putin,PER
+24,16,Rutgers,ORG
+25,16,Drew Lascari,PER
+26,16,Pequannock,ORG
+27,17,Man United,ORG
+28,17,Erik ten Hag,PER
+29,18,Grant Robertson,PER
+30,19,Veeva Vault CTMS,ORG
+31,19,Bristol Myers Squibb,ORG
+32,20,PVH Corp.,ORG
+33,21,Capital One,ORG
+34,21,SageView,ORG
+35,22,Mexico,LOC
+36,23,"Perficient, Inc",ORG
+37,23,Sigma Planning Corp,ORG
+38,24,Beaver Area High School,ORG
+39,25,Johnson,PER
+40,26,Huntington Bancshares,ORG
+41,27,United Airlines,ORG
+42,28,A835 Tore roundabout,LOC
+43,29,North Myrtle Beach Humane Society,ORG
+44,30,Hong Kong,LOC
+45,30,Disneyland,ORG
+46,30,Shanghai,LOC
+47,31,Daily Ripple-News,ORG
+48,32,Alaska Air Group Inc.,ORG
+49,33,West Bank,LOC
+50,34,Yuchun Lee,PER
+51,34,Vertex Pharmaceuticals Incorporated,ORG
+52,35,Green Roads,ORG
+53,35,United States,LOC
+54,35,The Valens Company,ORG
+55,36,Disney Springs,LOC
+56,36,Salt & Straw,ORG
+57,37,Volta Inc.,ORG
+58,37,VLTA,ORG
+59,37,Levi & Korsinsky,ORG
+60,38,UN court,ORG
+61,38,Colombia,LOC
+62,38,Nicaragua,LOC
+63,38,Caribbean,LOC
+64,39,Beaver Falls High School,ORG
+65,40,Sphere 3D,ORG
+66,41,Lewis Hamilton,PER
+67,41,Serena Williams,PER
+68,41,Chelsea,ORG
+69,41,Abramovich,PER
+70,42,UK,LOC
+71,42,RWS,ORG
+72,42,Hong Kong,LOC
+73,43,Brightpearl,ORG
+74,44,Insteel Industries,ORG
+75,45,Ethiopia,LOC
+76,45,Tigray,LOC
+77,46,Florida,LOC
+78,46,Disney,ORG
+80,47,Christoper Luxon,PER
+81,48,Loch Ness,LOC
+81,48,Highland,LOC
+82,49,Tennessee,LOC
+83,50,Sigma Planning Corp,ORG
+84,50,Invesco,ORG
+85,51,Office Properties Income Trust,ORG
+86,51,Zacks Investment Research,ORG
+87,52,The Daily Ripple-News,ORG
+88,53,Russia,LOC
+89,54,Man United,ORG
+90,54,Erik ten Hag,PER
+91,55,WELL Health,ORG
+92,55,Bloom Burton & Co.,ORG
+93,56,Veeva Vault CTMS,ORG
+94,56,Bristol Myers Squibb,ORG
+95,57,Beaver Local High School
 96,58,Rosewood Castiglion Del Bosco,ORG
 97,59,Marsh & McLennan,ORG
 98,60,Shiite Mosque,LOC
