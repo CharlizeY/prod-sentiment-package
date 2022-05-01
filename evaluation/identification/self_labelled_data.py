@@ -1,5 +1,5 @@
 # cd to the prod-sentiment-package
-# and run the following : python3 -m evaluation.identification.labelled_data
+# and run the following : python3 -m evaluation.identification.self_labelled_data
 
 import time
 import pandas as pd
@@ -11,7 +11,6 @@ from tabulate import tabulate
 
 from brand_sentiment.identification import BrandIdentification
 
-<<<<<<< Updated upstream
 
 def compute_num_of_entities(true_df, pred_df, concat_df, entity_type):
     ''' Compute the number of true, predicted, correctly matched entities for each entity type.
@@ -22,19 +21,6 @@ def compute_num_of_entities(true_df, pred_df, concat_df, entity_type):
     num_of_correct_entities = concat_df[(concat_df["matched_or_not"] == "True") & (concat_df["entity_type"] == entity_type)].shape[0]
 
     return num_of_true_entities, num_of_predicted_entities, num_of_correct_entities
-=======
-spark = sparknlp.start()  # spark = sparknlp.start(gpu=True)
-
-# Load the data
-df = spark.read.csv("./evaluation/identification/labeled_entity_sent.csv", header=True)
-# Only keep the first 50 headlines for evaluation
-df = df.select(F.col('text')).limit(50)
-
-MODEL_NAME = "ner_conll_bert_base_cased"
-brand_identifier = BrandIdentification(spark, MODEL_NAME)
-predictions = brand_identifier.pipeline_model.transform(df)
->>>>>>> Stashed changes
-
 
 def compute_classi_metrics(num_of_correct_entities, num_of_predicted_entities, num_of_true_entities):
     ''' Compute the precison, recall, F1 score for each entity type.
@@ -46,7 +32,6 @@ def compute_classi_metrics(num_of_correct_entities, num_of_predicted_entities, n
     rec = num_of_correct_entities/num_of_true_entities
     f1 = 2*prec*rec/(prec+rec)
 
-<<<<<<< Updated upstream
     return "{:.2f}".format(prec), "{:.2f}".format(rec), "{:.2f}".format(f1)
 
 
@@ -55,14 +40,14 @@ if __name__ == '__main__':
 
     # Load the labelled data with true sentence index, entity name and type
     cols_to_keep = ["true_index", "true_entity_name", "true_entity_type"]
-    true_df_pd = pd.read_csv("./evaluation/identification/entity_labeled.csv", usecols=cols_to_keep)  # Use Pandas df for evaluation
+    true_df_pd = pd.read_csv("./evaluation/identification/entity_labeled_dev.csv", usecols=cols_to_keep)  # Use Pandas df for evaluation
 
-    # Load the sentence data and keep the first labelled 50 sentences
+    # Load the sentence data and keep the first labelled 100 sentences
     input_df = spark.read.csv("./evaluation/identification/labeled_entity_sent.csv", header=True)  # Use Spark df for modelling
-    input_df = input_df.select(F.col("text")).limit(50)
+    input_df = input_df.select(F.col("text")).limit(102)
 
     # Run the model pipeline
-    MODEL_NAME = "ner_conll_bert_base_cased"
+    MODEL_NAME = "xlnet_base"
     brand_identifier = BrandIdentification(spark, MODEL_NAME)
     predictions = brand_identifier.pipeline_model.transform(input_df)
 
@@ -117,6 +102,3 @@ if __name__ == '__main__':
                ['LOC', prec_LOC, rec_LOC, f1_LOC]]
 
     print(tabulate(metrics, headers=["entity_type", "precision", "recall", "F1"]))
-=======
-pred_entity_df.show(100)
->>>>>>> Stashed changes
