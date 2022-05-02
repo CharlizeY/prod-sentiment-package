@@ -54,8 +54,8 @@ RUN . ./bin/activate && \
     python3.8 -m pip install virtualenv setuptools && \
     python3.8 -m pip install -r requirements.txt
 
-ENV AWS_ACCESS_KEY_ID=AKIAVGU37WNGVXDGONWG
-ENV AWS_SECRET_ACCESS_KEY=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
+ENV AWS_ACCESS_KEY_ID=
+ENV AWS_SECRET_ACCESS_KEY=
 
 ENV EXTRACTION_BUCKET_NAME=extracted-news-articles
 ENV SENTIMENT_BUCKET_NAME=processed-news-articles
